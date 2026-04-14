@@ -16,12 +16,18 @@ public class OrderQueue {
     }
 
     public void addOrder(Order order) {
-        // TODO: Implement add order
+        if (order != null) {
+            order.setId(nextOrderId++);
+            pendingOrders.offer(order);
+        }
+
     }
 
     public Order getNextOrder() {
-        // TODO: Implement get next order
-        return null;
+        if (pendingOrders.isEmpty()) {
+            return null;
+        }
+        return pendingOrders.poll();
     }
 
     public List<Order> getPendingOrders() {
@@ -29,7 +35,9 @@ public class OrderQueue {
     }
 
     public void markFulfilled(Order order) {
-        // TODO: Implement mark fulfilled
+        if (order != null) {
+            fulfilledOrders.add(order);
+        }
     }
 
     public Queue<Order> getQueue() {

@@ -1,7 +1,11 @@
 package com.group6.model.menu;
 
+import com.group6.util.Customization;
 import com.group6.util.PastryType;
 import com.group6.util.PastryVariety;
+import com.group6.util.Size;
+
+import java.util.List;
 
 public class Pastry extends MenuItem {
     private PastryType type;
@@ -27,5 +31,10 @@ public class Pastry extends MenuItem {
 
     public void setVariety(PastryVariety variety) {
         this.variety = variety;
+    }
+
+    @Override
+    public double calculatePrice(Size size, List<Customization> customizations) {
+        return basePrice;
     }
 }

@@ -22,8 +22,13 @@ public class OrderItem {
     }
 
     public double calculateItemPrice() {
-        // TODO: Implement calculate item price
-        return 0;
+        if (menuItem == null) {
+            unitPrice = 0;
+            return 0;
+        }
+
+        unitPrice = menuItem.calculatePrice(size, customizations);
+        return unitPrice * quantity;
     }
 
     public MenuItem getMenuItem() {

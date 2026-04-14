@@ -18,10 +18,14 @@ public class Barista extends User {
     }
 
     public void updateOrderStatus(Order order, OrderStatus status) {
-        // TODO: Implement update order status
+        if (order != null && status != null) {
+            order.setStatus(status);
+        }
     }
 
     public void completeOrder(Order order) {
-        // TODO: Implement complete order
+        if (order != null) {
+            order.setStatus(OrderStatus.COMPLETED);
+        }
     }
 }

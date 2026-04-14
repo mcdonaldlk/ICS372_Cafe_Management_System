@@ -21,10 +21,7 @@ public abstract class MenuItem {
         this.available = true;
     }
 
-    public double calculatePrice(Size size, List<Customization> customizations) {
-        // TODO: Implement calculate price
-        return 0;
-    }
+    public abstract double calculatePrice(Size size, List<Customization> customizations);
 
     public boolean checkIngredientAvailability() {
         // TODO: Implement check ingredient availability

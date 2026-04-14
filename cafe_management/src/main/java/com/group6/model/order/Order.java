@@ -22,16 +22,32 @@ public class Order {
     }
 
     public boolean addItem(OrderItem item) {
-        // TODO: Implement add item
-        return false;
+        
+        if (item == null || 
+            item.getMenuItem() == null || 
+            items == null) {
+            return false;
+        }
+        items.add(item);
+        return true;
     }
 
     public void removeItem(String itemId) {
-        // TODO: Implement remove item
+        if (items == null) {
+            return;
+        }
+        items.removeIf(item -> item.getMenuItem() != null 
+                        && item.getMenuItem().getId().equals(itemId));
     }
 
     public double calculateTotal() {
-        // TODO: Implement calculate total
+        double total = 0;
+        if (items != null && !items.isEmpty()) {
+            for (OrderItem item : items) {
+                total += item.calculateItemPrice();
+            }
+            return total;
+        }
         return 0;
     }
 
