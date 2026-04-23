@@ -1,7 +1,7 @@
-# Overall Class Diagram
+# Class Diagram (Codebase-Aligned)
 ```mermaid
 classDiagram
-    %% Model Layer
+    %% Core Users
     class User {
         <<abstract>>
         -String username
@@ -10,7 +10,7 @@ classDiagram
         +login(String, String): boolean
         +getRole(): UserRole
     }
-    
+
     class Customer {
         -String name
         -Order currentOrder
@@ -20,14 +20,14 @@ classDiagram
         +placeOrder(): void
         +clearOrder(): void
     }
-    
+
     class Barista {
         +Barista(String, String)
         +getPendingOrders(): List~Order~
         +updateOrderStatus(Order, OrderStatus): void
         +completeOrder(Order): void
     }
-    
+
     class Manager {
         +Manager(String, String)
         +viewInventory(): Map~Ingredient, Integer~
@@ -37,7 +37,8 @@ classDiagram
         +removeMenuItem(String): void
         +getFulfilledOrders(): List~Order~
     }
-    
+
+    %% Menu Domain
     class MenuItem {
         <<abstract>>
         -String id
@@ -49,20 +50,21 @@ classDiagram
         +checkIngredientAvailability(): boolean
         +consumeIngredients(): void
     }
-    
+
     class Beverage {
         -BeverageType type
         -Map~Size, Double~ sizeModifiers
         -List~CustomizationType~ availableCustomizations
-        +getPriceForSize(Size): double
-        +calculateCustomizationCost(List~Customization~): double
+        +calculatePrice(Size, List~Customization~): double
     }
-    
+
     class Pastry {
         -PastryType type
         -PastryVariety variety
+        +calculatePrice(Size, List~Customization~): double
     }
-    
+
+    %% Order / Inventory Domain
     class Order {
         -String orderId
         -String customerName
@@ -75,7 +77,7 @@ classDiagram
         +calculateTotal(): double
         +updateStatus(OrderStatus): void
     }
-    
+
     class OrderItem {
         -MenuItem menuItem
         -int quantity
@@ -84,17 +86,7 @@ classDiagram
         -double unitPrice
         +calculateItemPrice(): double
     }
-    
-    class InventoryManager {
-        -Map~Ingredient, Integer~ inventory
-        -Map~Ingredient, Integer~ lowStockThreshold
-        +loadFromJSON(String): void
-        +checkAvailability(Map~Ingredient, Double~): boolean
-        +deductIngredients(Map~Ingredient, Double~): boolean
-        +restock(Ingredient, int): void
-        +getLowStockItems(): List~Ingredient~
-    }
-    
+
     class OrderQueue {
         -Queue~Order~ pendingOrders
         -List~Order~ fulfilledOrders
@@ -104,10 +96,35 @@ classDiagram
         +getPendingOrders(): List~Order~
         +markFulfilled(Order): void
     }
-    
-    %% View Layer
+
+    class InventoryManager {
+        -Map~Ingredient, Integer~ inventory
+        -Map~Ingredient, Integer~ lowStockThreshold
+        +loadFromJSON(String): void
+        +checkAvailability(Map~Ingredient, Double~): boolean
+        +deductIngredients(Map~Ingredient, Double~): boolean
+        +restock(Ingredient, int): void
+        +getLowStockItems(): List~Ingredient~
+    }
+
+    %% Observer Interfaces Present In Codebase
+    class Observer {
+        <<interface>>
+        +update(String): void
+    }
+
+    class Subject {
+        <<interface>>
+        +attach(Observer): void
+        +detach(Observer): void
+        +notifyObservers(String): void
+    }
+
+    %% Views
     class LoginView {
         -Button customerButton
+        -Button baristaButton
+        -Button managerButton
         -TextField usernameField
         -PasswordField passwordField
         -Label messageLabel
@@ -115,13 +132,13 @@ classDiagram
         +hide(): void
         +displayErrorMessage(String): void
     }
-    
+
     class CustomerOrderView {
         -ComboBox~MenuItem~ itemSelector
         -ListView~MenuItem~ catalogView
         -ListView~OrderItem~ orderCartView
         -ComboBox~Size~ sizeSelector
-        -ListView~Customization~ customizationSelector
+        -ListView~Object~ customizationSelector
         -Label totalLabel
         -Button addButton
         -Button placeOrderButton
@@ -130,7 +147,7 @@ classDiagram
         +refreshCart(Order): void
         +showIngredientAlert(String): void
     }
-    
+
     class BaristaView {
         -ListView~Order~ ordersListView
         -Button updateStatusButton
@@ -140,7 +157,7 @@ classDiagram
         +showOrderDetails(Order): void
         +updateOrderStatus(Order): void
     }
-    
+
     class ManagerView {
         -TabPane mainTabPane
         -TableView~MenuItem~ menuTableView
@@ -153,8 +170,8 @@ classDiagram
         +refreshFulfilledOrders(List~Order~): void
         +showAddMenuItemDialog(): void
     }
-    
-    %% Controller Layer
+
+    %% Controllers
     class AuthController {
         -User currentUser
         -LoginView loginView
@@ -164,7 +181,19 @@ classDiagram
         +handleManagerLogin(String, String): boolean
         +logout(): void
     }
-    
+
+    class MainController {
+        -User currentUser
+        -AuthController authController
+        -OrderController orderController
+        -MenuController menuController
+        -InventoryController inventoryController
+        +switchToCustomerView(): void
+        +switchToBaristaView(): void
+        +switchToManagerView(): void
+        +logout(): void
+    }
+
     class OrderController {
         -OrderQueue orderQueue
         -InventoryManager inventoryManager
@@ -176,7 +205,16 @@ classDiagram
         +updateOrderStatus(Order, OrderStatus): void
         +completeOrder(Order): void
     }
-    
+
+    class InventoryController {
+        -InventoryManager inventoryManager
+        -ManagerView managerView
+        +getCurrentInventory(): Map~Ingredient, Integer~
+        +restockIngredient(Ingredient, int): void
+        +checkLowStock(): List~Ingredient~
+        +refreshInventoryView(): void
+    }
+
     class MenuController {
         -MenuCatalog menuCatalog
         -ManagerView managerView
@@ -188,77 +226,53 @@ classDiagram
         +deleteMenuItem(String): void
         +refreshMenuView(): void
     }
-    
-    class InventoryController {
-        -InventoryManager inventoryManager
-        -ManagerView managerView
-        +getCurrentInventory(): Map~Ingredient, Integer~
-        +restockIngredient(Ingredient, int): void
-        +checkLowStock(): List~Ingredient~
-        +refreshInventoryView(): void
+
+    class MenuCatalog {
+        -Map~String, MenuItem~ menuItems
+        +loadFromJSON(String): void
+        +getAllItems(): List~MenuItem~
+        +getItemById(String): MenuItem
+        +addItem(MenuItem): void
+        +updateItem(MenuItem): void
+        +removeItem(String): void
     }
-    
-    class NotificationController {
-        -List~View~ observers
-        +subscribe(View): void
-        +unsubscribe(View): void
-        +notifyOrderPlaced(Order): void
-        +notifyOrderStatusChanged(Order): void
-        +notifyInventoryUpdated(): void
-    }
-    
-    class MainController {
-        -AuthController authController
-        -OrderController orderController
-        -MenuController menuController
-        -InventoryController inventoryController
-        -NotificationController notificationController
-        -Stage primaryStage
-        +initializeApplication(): void
-        +switchToCustomerView(Customer): void
-        +switchToBaristaView(Barista): void
-        +switchToManagerView(Manager): void
-        +loadInitialData(): void
-    }
-    
-    %% Data Layer
-    class JSONDataLoader {
-        +loadMenu(String): List~MenuItem~
-        +loadInventory(String): Map~Ingredient, Integer~
-        +loadIngredients(String): List~Ingredient~
-        +saveMenu(String, List~MenuItem~): void
-        +saveInventory(String, Map~Ingredient, Integer~): void
-    }
-    
+
     %% Relationships
     User <|-- Customer
     User <|-- Barista
     User <|-- Manager
-    
+
     MenuItem <|-- Beverage
     MenuItem <|-- Pastry
-    
+
     Order "1" *-- "many" OrderItem
-    OrderItem "1" -- "1" MenuItem
-    OrderItem "1" -- "many" Customization
-    
-    InventoryManager --> Ingredient
+    OrderItem --> MenuItem
+    MenuCatalog "1" o-- "many" MenuItem
+
     OrderQueue --> Order
-    
+    InventoryManager --> Ingredient
+
     MainController --> AuthController
     MainController --> OrderController
     MainController --> MenuController
     MainController --> InventoryController
-    MainController --> NotificationController
-    MainController --> JSONDataLoader
-    
+
     AuthController --> LoginView
+    AuthController --> User
+    OrderController --> OrderQueue
+    OrderController --> InventoryManager
     OrderController --> CustomerOrderView
-    OrderController --> BaristaView
-    MenuController --> ManagerView
+    InventoryController --> InventoryManager
     InventoryController --> ManagerView
-    
-    NotificationController --> CustomerOrderView
-    NotificationController --> BaristaView
-    NotificationController --> ManagerView
+    MenuController --> MenuCatalog
+    MenuController --> ManagerView
+
+    %% Sequence-diagram interaction dependencies
+    BaristaView ..> OrderController : updateOrderStatus()/completeOrder()
+    CustomerOrderView ..> OrderController : addItemToOrder()/placeOrder()
+    ManagerView ..> InventoryController : restockIngredient()
+    OrderController ..> Order : updateStatus()/addItem()
+    OrderController ..> OrderQueue : addOrder()/markFulfilled()
+    OrderController ..> InventoryManager : checkAvailability()
+    InventoryController ..> InventoryManager : restock()
 ```
