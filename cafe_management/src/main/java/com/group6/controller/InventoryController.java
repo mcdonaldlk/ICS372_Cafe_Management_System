@@ -11,8 +11,8 @@ public class InventoryController {
     private InventoryManager inventoryManager;
     private ManagerView managerView;
 
-    public InventoryController(InventoryManager inventoryManager) {
-        this.inventoryManager = inventoryManager;
+    public InventoryController() {
+        this.inventoryManager = null;
         this.managerView = null;
     }
 

@@ -17,7 +17,7 @@ public class OrderQueue {
 
     public void addOrder(Order order) {
         if (order != null) {
-            order.setId(nextOrderId++);
+            order.setOrderId(nextOrderId++);
             pendingOrders.offer(order);
         }
 

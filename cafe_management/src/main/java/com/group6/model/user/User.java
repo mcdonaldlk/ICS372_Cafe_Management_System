@@ -14,7 +14,9 @@ public abstract class User {
     }
 
     public boolean login(String username, String password) {
-        // TODO: Implement login logic
+        if(username != null && password != null) {
+            return this.username.equals(username.trim()) && this.password.equals(password.trim());
+        }
         return false;
     }
 

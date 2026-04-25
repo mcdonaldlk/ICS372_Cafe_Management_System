@@ -6,14 +6,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Order {
-    private String orderId;
+    private int orderId;
     private String customerName;
     private LocalDateTime orderTime;
     private List<OrderItem> items;
     private OrderStatus status;
     private double totalPrice;
 
-    public Order(String orderId, String customerName) {
+    public Order(int orderId, String customerName) {
         this.orderId = orderId;
         this.customerName = customerName;
         this.orderTime = LocalDateTime.now();
@@ -55,11 +55,11 @@ public class Order {
         this.status = status;
     }
 
-    public String getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 

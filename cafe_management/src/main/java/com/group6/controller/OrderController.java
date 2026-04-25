@@ -18,11 +18,8 @@ public class OrderController {
     private Customer currentCustomer;
     private CustomerOrderView orderView;
 
-    public OrderController(OrderQueue orderQueue, InventoryManager inventoryManager) {
-        this.orderQueue = orderQueue;
-        this.inventoryManager = inventoryManager;
-        this.currentCustomer = null;
-        this.orderView = null;
+    public OrderController() {
+        
     }
 
     public boolean addItemToOrder(MenuItem menuItem, int quantity, Size size, List<Customization> customizations) {

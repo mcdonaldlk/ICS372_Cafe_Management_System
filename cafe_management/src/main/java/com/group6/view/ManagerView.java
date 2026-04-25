@@ -3,6 +3,8 @@ package com.group6.view;
 import com.group6.model.menu.MenuItem;
 import com.group6.model.order.Order;
 import com.group6.util.Ingredient;
+
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
@@ -10,7 +12,7 @@ import javafx.scene.control.TableView;
 import java.util.List;
 import java.util.Map;
 
-public class ManagerView {
+public class ManagerView implements View {
     private TabPane mainTabPane;
     private TableView<MenuItem> menuTableView;
     private TableView<Ingredient> inventoryTableView;
@@ -22,67 +24,45 @@ public class ManagerView {
         // TODO: Initialize UI components
     }
 
-    public void refreshMenu(List<MenuItem> menuItems) {
-        // TODO: Implement refresh menu
+    @Override
+    public Parent getView() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getView'");
     }
 
-    public void refreshInventory(Map<Ingredient, Integer> inventory) {
-        // TODO: Implement refresh inventory
+    @Override
+    public void initialize() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'initialize'");
     }
 
-    public void refreshFulfilledOrders(List<Order> orders) {
-        // TODO: Implement refresh fulfilled orders
+    @Override
+    public void show() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'show'");
     }
 
-    public void showAddMenuItemDialog() {
-        // TODO: Implement show add menu item dialog
+    @Override
+    public void refresh() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'refresh'");
     }
 
-    public TabPane getMainTabPane() {
-        return mainTabPane;
+    @Override
+    public void hide() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'hide'");
     }
 
-    public void setMainTabPane(TabPane mainTabPane) {
-        this.mainTabPane = mainTabPane;
+    @Override
+    public void displayErrorMessage(String message) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'displayErrorMessage'");
     }
 
-    public TableView<MenuItem> getMenuTableView() {
-        return menuTableView;
-    }
-
-    public void setMenuTableView(TableView<MenuItem> menuTableView) {
-        this.menuTableView = menuTableView;
-    }
-
-    public TableView<Ingredient> getInventoryTableView() {
-        return inventoryTableView;
-    }
-
-    public void setInventoryTableView(TableView<Ingredient> inventoryTableView) {
-        this.inventoryTableView = inventoryTableView;
-    }
-
-    public TableView<Order> getFulfilledOrdersView() {
-        return fulfilledOrdersView;
-    }
-
-    public void setFulfilledOrdersView(TableView<Order> fulfilledOrdersView) {
-        this.fulfilledOrdersView = fulfilledOrdersView;
-    }
-
-    public Button getAddMenuItemButton() {
-        return addMenuItemButton;
-    }
-
-    public void setAddMenuItemButton(Button addMenuItemButton) {
-        this.addMenuItemButton = addMenuItemButton;
-    }
-
-    public Button getRestockButton() {
-        return restockButton;
-    }
-
-    public void setRestockButton(Button restockButton) {
-        this.restockButton = restockButton;
+    @Override
+    public void clearMessages() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'clearMessages'");
     }
 }
