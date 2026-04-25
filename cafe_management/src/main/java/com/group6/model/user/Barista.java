@@ -25,7 +25,7 @@ public class Barista extends User {
 
     public void completeOrder(Order order) {
         if (order != null) {
-            order.setStatus(OrderStatus.COMPLETED);
+            order.setStatus(OrderStatus.FULFILLED);
         }
     }
 }
