@@ -11,8 +11,8 @@ public class MenuController {
     private MenuCatalog menuCatalog;
     private ManagerView managerView;
 
-    public MenuController(MenuCatalog menuCatalog) {
-        this.menuCatalog = menuCatalog;
+    public MenuController() {
+        this.menuCatalog = null;
         this.managerView = null;
     }
 

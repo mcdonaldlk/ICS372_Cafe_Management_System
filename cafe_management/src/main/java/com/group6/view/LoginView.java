@@ -15,7 +15,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class LoginView implements View {
-    private MainController mainController;
     private AuthController authController;
     
     // Customer pane components
@@ -47,8 +46,7 @@ public class LoginView implements View {
     private static final String LIGHT_GRAY = "#F0F0F0";
     private static final String BORDER_COLOR = "#000000";
 
-    public LoginView(MainController mainController, AuthController authController) {
-        this.mainController = mainController;
+    public LoginView(AuthController authController) {
         this.authController = authController;
     }
 
