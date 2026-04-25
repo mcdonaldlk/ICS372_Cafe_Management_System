@@ -376,7 +376,7 @@ public class LoginView implements View {
         topSeparator.setMaxWidth(800);
         topSeparator.setStyle("-fx-background-color: " + BLACK + ";");
         
-        Label footerLabel = new Label("© 2024 Brew & Bite - All rights reserved");
+        Label footerLabel = new Label("Brew & Bite");
         footerLabel.setTextFill(Color.web(BLACK));
         footerLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
         
