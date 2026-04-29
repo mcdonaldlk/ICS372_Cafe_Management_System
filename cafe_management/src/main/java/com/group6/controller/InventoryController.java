@@ -12,22 +12,20 @@ public class InventoryController {
     private ManagerView managerView;
 
     public InventoryController() {
-        this.inventoryManager = null;
+        this.inventoryManager = InventoryManager.getInstance();
         this.managerView = null;
     }
 
     public Map<Ingredient, Integer> getCurrentInventory() {
-        // TODO: Implement get current inventory
-        return null;
+        return inventoryManager.getInventory();
     }
 
     public void restockIngredient(Ingredient ingredient, int quantity) {
-        // TODO: Implement restock ingredient
+        inventoryManager.restock(ingredient, quantity);
     }
 
     public List<Ingredient> checkLowStock() {
-        // TODO: Implement check low stock
-        return null;
+        return inventoryManager.getLowStockItems();
     }
 
     public void refreshInventoryView() {
