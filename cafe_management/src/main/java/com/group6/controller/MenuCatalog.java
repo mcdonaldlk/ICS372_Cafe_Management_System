@@ -2,6 +2,7 @@ package com.group6.controller;
 
 import com.group6.model.menu.MenuItem;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ public class MenuCatalog {
 
     public MenuCatalog() {
         // TODO: Initialize menu catalog
+        this.menuItems = new HashMap<>();
     }
 
     public void loadFromJSON(String filePath) {

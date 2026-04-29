@@ -1,10 +1,14 @@
 package com.group6.controller;
 
-import com.group6.model.menu.Beverage;
 import com.group6.model.menu.MenuItem;
-import com.group6.model.menu.Pastry;
+import com.group6.pattern.factory.BeverageFactory;
+import com.group6.pattern.factory.PastryFactory;
+import com.group6.util.BeverageType;
+import com.group6.util.PastryType;
+import com.group6.util.PastryVariety;
 import com.group6.view.ManagerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuController {
@@ -16,19 +20,19 @@ public class MenuController {
         this.managerView = null;
     }
 
-    public List<MenuItem> getAllMenuItems() {
-        // TODO: Implement get all menu items
-        return null;
+
+    public List<MenuItem> getAvailableBeverages() {
+        List<MenuItem> list = new ArrayList<>();
+        list.add(new BeverageFactory("bev1", "Espresso", "Single shot espresso", 2.50, BeverageType.COFFEE).orderMenuItem());
+        list.add(new BeverageFactory("bev2", "Latte", "Espresso with milk", 3.50, BeverageType.COFFEE).orderMenuItem());
+        return list;
     }
 
-    public List<Beverage> getAvailableBeverages() {
-        // TODO: Implement get available beverages
-        return null;
-    }
-
-    public List<Pastry> getAvailablePastries() {
-        // TODO: Implement get available pastries
-        return null;
+    public List<MenuItem> getAvailablePastries() {
+        List<MenuItem> list = new ArrayList<>();
+        list.add(new PastryFactory("pst1", "Croissant", "Buttery croissant", 2.00, PastryType.CROISSANT, PastryVariety.PLAIN, 0).orderMenuItem());
+        list.add(new PastryFactory("pst2", "Chocolate Muffin", "Muffin with chocolate chips", 2.50, PastryType.MUFFIN, PastryVariety.CHOCOLATE, 0).orderMenuItem());
+        return list;
     }
 
     public void addMenuItem(MenuItem menuItem) {

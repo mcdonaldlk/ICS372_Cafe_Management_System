@@ -8,27 +8,44 @@ import com.group6.model.user.Customer;
 import com.group6.util.Customization;
 import com.group6.util.OrderStatus;
 import com.group6.util.Size;
-import com.group6.view.CustomerOrderView;
+import com.group6.view.CustomerView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderController {
     private OrderQueue orderQueue;
     private InventoryManager inventoryManager;
     private Customer currentCustomer;
-    private CustomerOrderView orderView;
+    private CustomerView customerView;
 
     public OrderController() {
-        
+        this.orderQueue = new OrderQueue();
+        this.inventoryManager = InventoryManager.getInstance();
     }
 
     public boolean addItemToOrder(MenuItem menuItem, int quantity, Size size, List<Customization> customizations) {
-        // TODO: Implement add item to order
-        return false;
+        if (menuItem == null || quantity <= 0) {
+            return false;
+        }
+
+        Map<com.group6.util.Ingredient, Double> scaledRequirements = new HashMap<>();
+        if (menuItem.getIngredientRequirements() != null) {
+            for (Map.Entry<com.group6.util.Ingredient, Double> entry : menuItem.getIngredientRequirements().entrySet()) {
+                scaledRequirements.put(entry.getKey(), entry.getValue() * quantity);
+            }
+        }
+
+        if (!inventoryManager.checkAvailability(scaledRequirements)) {
+            return false;
+        }
+
+        return inventoryManager.deductIngredients(scaledRequirements);
     }
 
     public void placeOrder() {
-        // TODO: Implement place order
+        // Order persistence/UI wiring can be added once the customer cart is connected.
     }
 
     public void clearOrder() {
@@ -67,11 +84,11 @@ public class OrderController {
         this.currentCustomer = currentCustomer;
     }
 
-    public CustomerOrderView getOrderView() {
-        return orderView;
+    public CustomerView getOrderView() {
+        return customerView;
     }
 
-    public void setOrderView(CustomerOrderView orderView) {
-        this.orderView = orderView;
+    public void setOrderView(CustomerView orderView) {
+        this.customerView = orderView;
     }
 }

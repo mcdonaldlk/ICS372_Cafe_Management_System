@@ -1,0 +1,44 @@
+[
+  {
+    "id": "ing-coffee-beans",
+    "name": "Coffee Beans",
+    "unit": "grams",
+    "quantity": 1000,
+    "lowStockThreshold": 200
+  },
+  {
+    "id": "ing-milk",
+    "name": "Milk",
+    "unit": "milliliters",
+    "quantity": 5000,
+    "lowStockThreshold": 500
+  },
+  {
+    "id": "ing-sugar",
+    "name": "Sugar",
+    "unit": "grams",
+    "quantity": 2000,
+    "lowStockThreshold": 200
+  },
+  {
+    "id": "ing-flour",
+    "name": "Flour",
+    "unit": "grams",
+    "quantity": 4000,
+    "lowStockThreshold": 300
+  },
+  {
+    "id": "ing-butter",
+    "name": "Butter",
+    "unit": "grams",
+    "quantity": 1500,
+    "lowStockThreshold": 150
+  },
+  {
+    "id": "ing-choc-chips",
+    "name": "Chocolate Chips",
+    "unit": "grams",
+    "quantity": 1200,
+    "lowStockThreshold": 150
+  }
+]

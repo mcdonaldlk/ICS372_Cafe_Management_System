@@ -6,8 +6,9 @@ import com.group6.model.user.Barista;
 import com.group6.model.user.Customer;
 import com.group6.model.user.Manager;
 import com.group6.model.user.User;
+import com.group6.model.inventory.InventoryManager;
 import com.group6.view.LoginView;
-import com.group6.view.CustomerOrderView;
+import com.group6.view.CustomerView;
 import com.group6.view.BaristaView;
 import com.group6.view.ManagerView;
 
@@ -31,7 +32,7 @@ public class MainController {
     private View currentView;
 
     private LoginView loginView;
-    private CustomerOrderView customerOrderView;
+    private CustomerView customerView;
     private BaristaView baristaView;
     private ManagerView managerView;        
 
@@ -41,23 +42,25 @@ public class MainController {
         this.orderController = new OrderController();
         this.menuController = new MenuController();
         this.inventoryController = new InventoryController();   
+        this.orderController.setInventoryManager(InventoryManager.getInstance());
+        this.inventoryController.setInventoryManager(InventoryManager.getInstance());
     }
 
     public void init(Stage primaryStage) {
         this.primaryStage = primaryStage;
         
         // Create login view with controllers
-        LoginView loginView = new LoginView(authController);
+        this.loginView = new LoginView(authController);
         
         // Set up the scene
-        Scene scene = new Scene(loginView.getView(), 1100, 750);
-        primaryStage.setTitle("Brew & Bite - Cafe Management System");
-        primaryStage.setScene(scene);
-        primaryStage.setMinWidth(1000);
-        primaryStage.setMinHeight(700);
+        this.scene = new Scene(loginView.getView(), 1100, 750);
+        this.primaryStage.setTitle("Brew & Bite - Cafe Management System");
+        this.primaryStage.setScene(scene);
+        this.primaryStage.setMinWidth(1000);
+        this.primaryStage.setMinHeight(700);
         
         // Show the login view
-        primaryStage.show();
+        this.primaryStage.show();
     }
 
     public void showLoginView() {
@@ -65,12 +68,10 @@ public class MainController {
     }
 
     public void switchToCustomerView(Customer customer) {
-        if(customerOrderView == null) {
-            customerOrderView = new CustomerOrderView();
-        }
-        scene.setRoot(customerOrderView.getView());
-        customerOrderView.refresh();
         this.currentUser = customer;
+        customerView = new CustomerView(customer, orderController, menuController, this);
+        scene.setRoot(customerView.getView());
+        customerView.refresh();
     }
 
     public void switchToBaristaView(Barista barista) {
@@ -93,6 +94,7 @@ public class MainController {
 
     public void logout() {
         this.currentUser = null;
+        this.currentView = null;    
         showLoginView();
     }
 

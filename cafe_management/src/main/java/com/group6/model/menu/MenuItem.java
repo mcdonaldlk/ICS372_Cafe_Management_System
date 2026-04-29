@@ -1,5 +1,6 @@
 package com.group6.model.menu;
 
+import com.group6.model.inventory.InventoryManager;
 import com.group6.util.Customization;
 import com.group6.util.Ingredient;
 import com.group6.util.Size;
@@ -24,12 +25,11 @@ public abstract class MenuItem {
     public abstract double calculatePrice(Size size, List<Customization> customizations);
 
     public boolean checkIngredientAvailability() {
-        // TODO: Implement check ingredient availability
-        return false;
+        return InventoryManager.getInstance().checkAvailability(ingredientRequirements);
     }
 
     public void consumeIngredients() {
-        // TODO: Implement consume ingredients
+        InventoryManager.getInstance().deductIngredients(ingredientRequirements);
     }
 
     public String getId() {
@@ -70,5 +70,9 @@ public abstract class MenuItem {
 
     public void setIngredientRequirements(Map<Ingredient, Double> ingredientRequirements) {
         this.ingredientRequirements = ingredientRequirements;
+    }
+
+    public String getDescription() {
+        return name;
     }
 }
